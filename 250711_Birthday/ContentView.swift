@@ -10,11 +10,12 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var friends: [Friend] = [
-        Friend(name: "Elton", birthday: .now), // used as a placeholder
-        Friend(name: "Jenny", birthday: Date(timeIntervalSince1970: 0))
-    ]
+    @State private var friends: [Friend] = []
     
+    
+    @State private var newName = ""
+    @State private var newBirthday = Date.now
+    // must give a value + must initialise
     
     var body: some View {
         NavigationStack {
@@ -26,8 +27,34 @@ struct ContentView: View {
                 }
                 
             }
+            .navigationTitle("Birthdays")
+            .safeAreaInset(edge: .bottom) {
+                VStack {
+                    Text("New Birthday")
+                        .font(.headline)
+                    DatePicker(selection: $newBirthday, in: Date.distantPast...Date.now, displayedComponents: .date) {
+                        TextField("Name", text: $newName)
+                            .textFieldStyle(.roundedBorder)
+                    }
+                    Button("Save") {
+                        let newFriend = Friend(name: newName, birthday: newBirthday)
+                        friends.append(newFriend)
+                    }
+                    .padding([.leading, .trailing], 10)
+                    .padding([.top, .bottom], 5)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(5)
+                    
+                    
+                }
+                .padding()
+                
+            }
+            
+            // allows popup from bottom
+
         }
-        .navigationTitle("Birthdays")
 
     }
 }
