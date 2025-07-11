@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct _50711_BirthdayApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: Friend.self)
+                // responsible for loading + saving data
         }
     }
 }

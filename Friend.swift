@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import SwiftData
 
+@Model // refers to the structure, organization, or blueprint of our data -- interacts with persistent storage system
 class Friend {
     var name: String
     var birthday: Date
