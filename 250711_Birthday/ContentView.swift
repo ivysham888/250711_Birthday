@@ -59,6 +59,13 @@ struct ContentView: View {
                     DatePicker(selection: $newBirthday, in: Date.distantPast...Date.now, displayedComponents: .date) {
                         TextField("Name", text: $newName)
                             .textFieldStyle(.roundedBorder)
+                        
+                        if newName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            Text("Name is required")
+                                .foregroundColor(.red)
+                                .font(.caption)
+                        }
+
                     }
                     Button("Save") {
                         let newFriend = Friend(name: newName, birthday: newBirthday)
@@ -67,6 +74,7 @@ struct ContentView: View {
                         newName = ""
                         newBirthday = .now
                     }
+                    .disabled(newName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     .padding([.leading, .trailing], 10)
                     .padding([.top, .bottom], 5)
                     .background(Color.blue)

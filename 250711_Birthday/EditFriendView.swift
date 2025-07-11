@@ -24,25 +24,38 @@ struct EditFriendView: View {
     
     
     var body: some View {
-        Form {
-            TextField("Name", text: $newName)
-            DatePicker("Birthday", selection: $newBirthday, in: Date.distantPast...Date.now, displayedComponents: .date)
-        }
-        .navigationTitle("Edit friend")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    dismiss()
+        VStack {
+            Form {
+                Section {
+                    TextField("Name", text: $newName)
+                    
+                    if newName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Text("Name is required")
+                            .foregroundColor(.red)
+                            .font(.caption)
+                    }
+                }
+                DatePicker("Birthday", selection: $newBirthday, in: Date.distantPast...Date.now, displayedComponents: .date)
+            }
+            .disabled(newName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            .navigationTitle("Edit friend")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        friend.name = newName
+                        friend.birthday = newBirthday
+                        dismiss()
+                    }
                 }
             }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Save") {
-                    friend.name = newName
-                    friend.birthday = newBirthday
-                    dismiss()
-                }
-            }
+
+
         }
     }
 }
