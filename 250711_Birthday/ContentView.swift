@@ -19,6 +19,9 @@ struct ContentView: View {
     @State private var newBirthday = Date.now
     // must give a value + must initialise
     
+    @State private var selectedFriend: Friend?
+    // question mark means optional variable
+    
     var body: some View {
         NavigationStack {
             List{
@@ -27,13 +30,28 @@ struct ContentView: View {
                 HStack {
                     Text(friend.name)
                     Spacer()
+                    
+                    if Calendar.current.isDateInToday(friend.birthday) {
+                        Text("🎂")
+                        // adds birthday cake if today is the birthday
+                    }
+                    
                     Text(friend.birthday, format: .dateTime.month(.wide).day().year())
+                    
+                }
+                .onTapGesture {
+                    selectedFriend = friend
                 }
             }
                 .onDelete(perform: deleteFriend)
                 
             }
             .navigationTitle("Birthdays")
+            .sheet(item: $selectedFriend) {friend in
+                NavigationStack {
+                    EditFriendView(friend: friend)
+                }
+            }
             .safeAreaInset(edge: .bottom) {
                 VStack {
                     Text("New Birthday")
