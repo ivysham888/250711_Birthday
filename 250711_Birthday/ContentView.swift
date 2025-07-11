@@ -7,15 +7,28 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
+    
+    @State private var friends: [Friend] = [
+        Friend(name: "Elton", birthday: .now), // used as a placeholder
+        Friend(name: "Jenny", birthday: Date(timeIntervalSince1970: 0))
+    ]
+    
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List(friends, id: \.name) {friend in
+                HStack {
+                    Text(friend.name)
+                    Spacer()
+                    Text(friend.birthday, format: .dateTime.month(.wide).day().year())
+                }
+                
+            }
         }
-        .padding()
+        .navigationTitle("Birthdays")
+
     }
 }
 
